@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WNBA Live Leaders — Points, Rebounds &amp; Assists Tracker</title>
+<meta name="description" content="A live-updating WNBA stat leaderboard: points and shot breakdowns, rebound leaders with offensive/defensive splits, and assist leaders with playmaking context.">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="wrap">
+
+  <header class="board">
+    <div class="board-top">
+      <h1 class="board-title">WNBA <span>Live Leaders</span></h1>
+      <div class="board-meta">
+        <strong><span class="live-dot"></span>2026 Regular Season</strong>
+        Data as of <span id="lastUpdated">—</span><br>
+        Source: Basketball-Reference.com
+      </div>
+    </div>
+    <div class="ticker">
+      <div class="ticker-track" id="tickerTrack"></div>
+    </div>
+  </header>
+
+  <nav class="tabs">
+    <button class="active" data-target="tab-points">Points &amp; Shooting</button>
+    <button data-target="tab-rebounds">Rebounds</button>
+    <button data-target="tab-assists">Assists</button>
+    <button data-target="tab-playmaking">Playmaking Style</button>
+  </nav>
+
+  <!-- POINTS -->
+  <section class="panel active" id="tab-points">
+    <h2 class="section-title">Scoring Leaders</h2>
+    <p class="section-sub">Total points and points-per-game leaders this season, plus a shot-type breakdown (2PT / 3PT / free throws) for the league's top scorers. Click any row in the "Scoring Breakdown" board to see that player's shot tracker.</p>
+
+    <div class="board-grid">
+      <div class="leader-card">
+        <h3>Total Points</h3>
+        <div id="pointsBoard"></div>
+      </div>
+      <div class="leader-card">
+        <h3>Points Per Game</h3>
+        <div id="ppgBoard"></div>
+      </div>
+    </div>
+
+    <div class="leader-card" style="margin-top:28px">
+      <h3>Scoring Breakdown — click a player</h3>
+      <div id="scoringBoard"></div>
+    </div>
+
+    <div class="detail" id="scoringDetail"></div>
+  </section>
+
+  <!-- REBOUNDS -->
+  <section class="panel" id="tab-rebounds">
+    <h2 class="section-title">Rebounding Leaders</h2>
+    <p class="section-sub">Total rebounds and rebounds-per-game leaders, with an offensive vs. defensive split for each. Click a player in the left board to see where their boards come from.</p>
+
+    <div class="board-grid">
+      <div class="leader-card">
+        <h3>Total Rebounds — click a player</h3>
+        <div id="reboundBoard"></div>
+      </div>
+      <div class="leader-card">
+        <h3>Rebounds Per Game</h3>
+        <div id="rpgBoard"></div>
+      </div>
+    </div>
+
+    <div class="detail" id="reboundDetail"></div>
+  </section>
+
+  <!-- ASSISTS -->
+  <section class="panel" id="tab-assists">
+    <h2 class="section-title">Assist Leaders</h2>
+    <p class="section-sub">Total assists, assists-per-game, and assist percentage (share of teammate field goals assisted while on the floor). Click a player to see their assist rate, then check the Playmaking Style tab for how they tend to generate those assists.</p>
+
+    <div class="board-grid">
+      <div class="leader-card">
+        <h3>Total Assists — click a player</h3>
+        <div id="assistBoard"></div>
+      </div>
+      <div class="leader-card">
+        <h3>Assists Per Game</h3>
+        <div id="apgBoard"></div>
+      </div>
+    </div>
+
+    <div class="detail" id="assistDetail"></div>
+  </section>
+
+  <!-- PLAYMAKING STYLE -->
+  <section class="panel" id="tab-playmaking">
+    <h2 class="section-title">Playmaking Style</h2>
+    <div class="sample-banner">
+      Sample data — not measured
+      <span>Real play-type assist splits (pick-and-roll / post-up / spot-up / transition) come from Synergy Sports or Second Spectrum tracking, which has no free public API. The percentages below are placeholders so the chart works end-to-end. The written notes are real, based on publicly reported scouting of each player's game. See README.md for how to wire in a real feed if you get API access.</span>
+    </div>
+    <div id="playmakingCards"></div>
+  </section>
+
+  <footer class="credits">
+    Built as a static, no-build-step dashboard — deployable straight to GitHub Pages.
+    Stat data: <a href="https://www.basketball-reference.com/wnba/years/2026_leaders.html" target="_blank" rel="noopener">Basketball-Reference 2026 WNBA Leaders</a>.
+    See README.md for update instructions and data-source notes.
+  </footer>
+
+</div>
+
+<script src="data.js"></script>
+<script src="script.js"></script>
+</body>
+</html>
