@@ -14,26 +14,6 @@ A static, no-build-step dashboard tracking WNBA statistical leaders:
 
 It's plain HTML/CSS/JS — no npm, no build tool, no framework. Open `index.html` in a browser and it works; push it to a repo and GitHub Pages serves it as-is.
 
-## Deploying to GitHub Pages
-
-1. Create a new repo (or use an existing one) and add these four files to it:
-   `index.html`, `style.css`, `script.js`, `data.js`.
-2. Commit and push to the `main` branch.
-3. In the repo, go to **Settings → Pages**.
-4. Under "Build and deployment", set **Source** to "Deploy from a branch", branch `main`, folder `/ (root)`.
-5. Save. GitHub will give you a URL like `https://<username>.github.io/<repo-name>/` within a minute or two.
-
-That's the whole deployment — there's nothing to compile.
-
-```bash
-git init
-git add index.html style.css script.js data.js README.md
-git commit -m "WNBA live leaders dashboard"
-git branch -M main
-git remote add origin https://github.com/<you>/<repo>.git
-git push -u origin main
-```
-
 ## Where the data comes from — and where it doesn't
 
 **Real data** (points, PPG, rebounds, RPG, offensive/defensive rebound splits, assists, APG, assist %, shooting percentages, and the 2PT/3PT/FT scoring breakdown) is pulled from [Basketball-Reference's 2026 WNBA Leaders page](https://www.basketball-reference.com/wnba/years/2026_leaders.html), current as of **July 14, 2026**. The scoring breakdown (makes by shot type) is arithmetically derived from Basketball-Reference's official season totals — each player's row is cross-checked to sum exactly to her real point total.
