@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WNBA Live Leaders — Live Game Tracker, Stats &amp; Standings</title>
+<meta name="description" content="A live WNBA game tracker with today's and tomorrow's scores, plus stat leaderboards, standings, and playoff race — built for people who can't watch the games on TV.">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="wrap">
+
+  <header class="board">
+    <div class="board-top">
+      <h1 class="board-title">
+        <svg class="ball-icon" viewBox="0 0 40 40" width="34" height="34" aria-hidden="true">
+          <circle cx="20" cy="20" r="18" fill="none" stroke="currentColor" stroke-width="2.5"/>
+          <path d="M20 2 V38 M2 20 H38" stroke="currentColor" stroke-width="2" fill="none"/>
+          <path d="M6 8 C14 16, 26 16, 34 8 M6 32 C14 24, 26 24, 34 32" stroke="currentColor" stroke-width="2" fill="none"/>
+        </svg>
+        WNBA <span>Live Leaders</span>
+      </h1>
+      <div class="board-meta">
+        <strong><span class="live-dot"></span>2026 Regular Season</strong>
+        Stats as of <span id="lastUpdated">—</span><br>
+        Scores via ESPN &middot; Stats via Basketball-Reference
+      </div>
+    </div>
+    <div class="ticker">
+      <div class="ticker-track" id="tickerTrack"><span class="ticker-item"><b>Loading today's games…</b></span></div>
+    </div>
+  </header>
+
+  <nav class="tabs">
+    <button class="active" data-target="tab-livegames">Live Games</button>
+    <button data-target="tab-points">Points &amp; Shooting</button>
+    <button data-target="tab-rebounds">Rebounds</button>
+    <button data-target="tab-assists">Assists</button>
+    <button data-target="tab-standings">Playoff Race</button>
+    <button data-target="tab-awards">Awards Predictions</button>
+  </nav>
+
+  <!-- LIVE GAMES -->
+  <section class="panel active live-theme" id="tab-livegames">
+    <h2 class="section-title">
+      <svg class="ball-icon-inline" viewBox="0 0 40 40" width="22" height="22" aria-hidden="true">
+        <circle cx="20" cy="20" r="18" fill="none" stroke="currentColor" stroke-width="2.5"/>
+        <path d="M20 2 V38 M2 20 H38" stroke="currentColor" stroke-width="2" fill="none"/>
+        <path d="M6 8 C14 16, 26 16, 34 8 M6 32 C14 24, 26 24, 34 32" stroke="currentColor" stroke-width="2" fill="none"/>
+      </svg>
+      Live Games
+    </h2>
+    <p class="section-sub">Today's and tomorrow's WNBA games with real scores and status — built for anyone who can't watch the games live on TV. Scores refresh automatically about once a minute while this tab is open. Last checked <span id="liveGamesUpdated">—</span>. <button id="refreshGamesBtn" type="button" style="font-family:'Oswald',sans-serif;font-size:11.5px;text-transform:uppercase;letter-spacing:0.05em;background:var(--sky-pale);color:var(--sky);border:1px solid var(--sky-deep);border-radius:4px;padding:3px 10px;cursor:pointer;margin-left:6px">Refresh now</button></p>
+
+    <h3 class="section-title" style="font-size:18px">Today</h3>
+    <div class="games-grid" id="todayGamesContainer">
+      <p class="loading-text">Loading today's games…</p>
+    </div>
+
+    <h3 class="section-title" style="font-size:18px;margin-top:30px">Tomorrow</h3>
+    <div class="games-grid" id="tomorrowGamesContainer">
+      <p class="loading-text">Loading tomorrow's games…</p>
+    </div>
+
+    <div class="pbp-panel" id="playByPlayPanel">
+      <p class="empty-text">Tap any game above to follow its play-by-play here — a running, auto-updating feed of the game as it happens, for anyone who can't watch it live on TV.</p>
+    </div>
+
+    <div class="sample-banner" style="margin-top:26px">
+      Where this data comes from
+      <span>Scores, schedule, and play-by-play are fetched live from ESPN's public scoreboard and summary endpoints — the same data sources the open-source <code>wehoop</code> R package wraps for WNBA data. They're unauthenticated and free, but unofficial, undocumented ESPN endpoints, not a guaranteed stable API — ESPN could change or rate-limit them without notice. See README.md for details and a fallback plan.</span>
+    </div>
+  </section>
+
+  <!-- POINTS -->
+  <section class="panel" id="tab-points">
+    <h2 class="section-title">Scoring Leaders</h2>
+    <p class="section-sub">Total points and points-per-game leaders this season. Click any player in either column to pop up her shot-type breakdown (2PT / 3PT / free throws).</p>
+
+    <div class="board-grid">
+      <div class="leader-card">
+        <h3>Total Points — click a player</h3>
+        <div id="pointsBoard"></div>
+      </div>
+      <div class="leader-card">
+        <h3>Points Per Game — click a player</h3>
+        <div id="ppgBoard"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- REBOUNDS -->
+  <section class="panel" id="tab-rebounds">
+    <h2 class="section-title">Rebounding Leaders</h2>
+    <p class="section-sub">Total rebounds and rebounds-per-game leaders. Click any player in either column to pop up her offensive vs. defensive rebound split.</p>
+
+    <div class="board-grid">
+      <div class="leader-card">
+        <h3>Total Rebounds — click a player</h3>
+        <div id="reboundBoard"></div>
+      </div>
+      <div class="leader-card">
+        <h3>Rebounds Per Game — click a player</h3>
+        <div id="rpgBoard"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ASSISTS -->
+  <section class="panel" id="tab-assists">
+    <h2 class="section-title">Assist Leaders</h2>
+    <p class="section-sub">Total assists and assists-per-game leaders. Click any player in either column to pop up her assist percentage (share of teammate field goals assisted while on the floor).</p>
+
+    <div class="board-grid">
+      <div class="leader-card">
+        <h3>Total Assists — click a player</h3>
+        <div id="assistBoard"></div>
+      </div>
+      <div class="leader-card">
+        <h3>Assists Per Game — click a player</h3>
+        <div id="apgBoard"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- STANDINGS & PLAYOFF RACE -->
+  <section class="panel" id="tab-standings">
+    <h2 class="section-title">Playoff Race &amp; Bracket</h2>
+    <p class="section-sub">The 8 teams that would make the playoffs if the season ended today, seeded 1-8 league-wide and matched up in a standard bracket (1v8, 4v5, 2v7, 3v6, with no reseeding between rounds). Click any team for its record, play style, star players, and strengths &amp; weaknesses.</p>
+
+    <div class="sample-banner">
+      Projected seeding — the regular season isn't over
+      <span>This bracket reflects the standings as of the last data refresh, not a finalized playoff field. Seeding (especially the 4-5 and 6-7-8 range) can still shift with games remaining. The scouting notes in each team's popup are Claude's synthesis of the season's real stats — see README.md for exactly what's sourced vs. synthesized.</span>
+    </div>
+
+    <div id="playoffBracket" class="bracket-wrap"></div>
+
+    <div class="leader-card" style="margin-top:28px">
+      <h3>Full League Standings — dashed line marks the playoff cutoff</h3>
+      <div id="standingsBoard"></div>
+    </div>
+  </section>
+
+  <div id="appModal" class="team-modal"></div>
+
+  <!-- AWARDS PREDICTIONS -->
+  <section class="panel" id="tab-awards">
+    <h2 class="section-title">End-of-Season Awards Predictions</h2>
+    <div class="sample-banner">
+      Prediction, not a final result
+      <span>These are midseason expert consensus picks and sportsbook award odds (ESPN's awards tracker, CBS Sports staff picks, BetMGM/FanDuel odds), all as of mid-July 2026 — roughly half the season remains, and races like this move. Nothing here is an actual award winner.</span>
+    </div>
+
+    <h3 style="font-family:'Oswald',sans-serif;text-transform:uppercase;font-size:15px;letter-spacing:0.06em;color:var(--chalk);margin:22px 0 10px">Most Valuable Player</h3>
+    <div id="mvpRace"></div>
+
+    <h3 style="font-family:'Oswald',sans-serif;text-transform:uppercase;font-size:15px;letter-spacing:0.06em;color:var(--chalk);margin:22px 0 10px">Rookie of the Year</h3>
+    <div id="royRace"></div>
+
+    <h3 style="font-family:'Oswald',sans-serif;text-transform:uppercase;font-size:15px;letter-spacing:0.06em;color:var(--chalk);margin:22px 0 10px">Defensive Player of the Year</h3>
+    <div id="dpoyRace"></div>
+
+    <p class="section-sub" style="margin-top:18px">Most Improved Player, Sixth Woman, and Coach of the Year races are thinner on public reporting at this point in the season, so they're left off rather than guessed at.</p>
+  </section>
+
+  <footer class="credits">
+    <svg class="hoop-icon" viewBox="0 0 60 30" width="46" height="23" aria-hidden="true">
+      <line x1="2" y1="4" x2="58" y2="4" stroke="currentColor" stroke-width="2.5"/>
+      <path d="M8 4 L10 26 M16 4 L17 27 M24 4 L24.5 28 M30 4 L30 28 M36 4 L35.5 28 M44 4 L43 27 M52 4 L50 26"
+        stroke="currentColor" stroke-width="1.3" fill="none" opacity="0.65"/>
+      <path d="M8 4 Q30 10 52 4" stroke="currentColor" stroke-width="1.3" fill="none" opacity="0.65"/>
+      <path d="M10 26 Q30 32 50 26" stroke="currentColor" stroke-width="1.3" fill="none" opacity="0.65"/>
+    </svg>
+    Built as a static, no-build-step dashboard — deployable straight to GitHub Pages.
+    Stat data: <a href="https://www.basketball-reference.com/wnba/years/2026_leaders.html" target="_blank" rel="noopener">Basketball-Reference 2026 WNBA Leaders</a>.
+    See README.md for update instructions and data-source notes.
+  </footer>
+
+</div>
+
+<script src="data.js"></script>
+<script src="script.js"></script>
+</body>
+</html>
